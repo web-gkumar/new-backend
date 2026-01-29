@@ -31,17 +31,11 @@ exports.getProfile = async (req, res) => {
 exports.updateProfile = async (req, res) => {
   try {
     const userId = req.user.userId;
-
-    // Fields jo update ho sakte hain
     const { name, mobile, address, country } = req.body;
-
-    // User ko find karke update karo
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
-    // Fields update karo agar provided hain
     if (name) user.name = name;
     if (mobile) user.mobile = mobile;
     if (address) user.address = address;
