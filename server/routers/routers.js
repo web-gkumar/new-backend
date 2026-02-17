@@ -14,6 +14,7 @@ router.put("/profile", authMiddleware, updateProfile);
 
 /* Orders */
 router.post("/orders", upload.array("files", 5), orderCtrl.createOrder);
+router.put("/orders/:id", upload.array("files"), orderCtrl.updateOrder);
 router.get("/orders/:userId", orderCtrl.getOrdersByUser);
 router.delete("/orders/:id", orderCtrl.deleteOrder);
 
