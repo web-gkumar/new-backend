@@ -47,15 +47,7 @@ exports.updateProfile = async (req, res) => {
     res.json({
       success: true,
       message: "Profile updated successfully",
-      user: {
-        userId: user._id,
-        name: user.name,
-        email: user.email,
-        picture: user.picture,
-        mobile: user.mobile,
-        address: user.address,
-        country: user.country,
-      }
+      user: {user}
     });
   } catch (err) {
     console.error(err);
