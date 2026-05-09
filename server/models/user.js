@@ -8,7 +8,11 @@ const userSchema = new mongoose.Schema(
     picture: { type: String },
     mobile: { type: Number }, 
     address: { type: String },
-    country: { type: String }, 
+    country: { type: String },
+    vllage: { type: String },
+    distic: { type: String },
+    state: { type: String },
+    pincode: { type: Number },
     provider: { type: String, default: "google" },
   },
   { timestamps: true }
