@@ -46,7 +46,7 @@ exports.updateProfile = async (req, res) => {
     if (mobile) user.mobile = mobile;
     if (address) user.address = address;
     if (country) user.country = country;
-    if (vllage) user.vllage = vllage;
+    if (village) user.village = village;
     if (distic) user.distic = distic;
     if (state) user.state = state;
     if (pincode) user.pincode = pincode;
@@ -54,11 +54,7 @@ exports.updateProfile = async (req, res) => {
     // Save the updated user
     await user.save();
 
-    res.json({
-      success: true,
-      message: "Profile updated successfully",
-      user: { user }
-    });
+    res.json({ success: true, message: "Profile updated successfully", user: { user } });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Profile update failed" });
