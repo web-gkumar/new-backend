@@ -7,12 +7,14 @@ exports.getProfile = async (req, res) => {
     if (!user)
       return res.status(404).json({ message: "User not found" });
 
-    res.json({
-      success: true,
+    res.json({ success: true,
       user: {
         userId: user._id,
         name: user.name,
         email: user.email,
+        mobile: user.mobile,
+        address: user.address,
+        country: user.country,
         picture: user.picture,
       }
     });
@@ -47,15 +49,7 @@ exports.updateProfile = async (req, res) => {
     res.json({
       success: true,
       message: "Profile updated successfully",
-      user: {
-        userId: user._id,
-        name: user.name,
-        email: user.email,
-        picture: user.picture,
-        mobile: user.mobile,
-        address: user.address,
-        country: user.country,
-      }
+      user: { user }
     });
   } catch (err) {
     console.error(err);

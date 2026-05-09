@@ -9,7 +9,6 @@ const userSchema = new mongoose.Schema(
     mobile: { type: Number }, 
     address: { type: String },
     country: { type: String }, 
-
     provider: { type: String, default: "google" },
   },
   { timestamps: true }
