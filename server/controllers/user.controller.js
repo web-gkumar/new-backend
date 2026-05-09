@@ -15,7 +15,7 @@ exports.getProfile = async (req, res) => {
         mobile: user.mobile,
         address: user.address,
         country: user.country,
-        vllage: user.vllage,
+        village: user.village,
         distic: user.distic,
         state: user.state,
         pincode: user.pincode,
@@ -37,7 +37,7 @@ exports.getProfile = async (req, res) => {
 exports.updateProfile = async (req, res) => {
   try {
     const userId = req.user.userId;
-    const { name, mobile, address, country } = req.body;
+    const { name, mobile, address, country, village, distic, state, pincode } = req.body;
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
