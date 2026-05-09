@@ -15,6 +15,10 @@ exports.getProfile = async (req, res) => {
         mobile: user.mobile,
         address: user.address,
         country: user.country,
+        vllage: user.vllage,
+        distic: user.distic,
+        state: user.state,
+        pincode: user.pincode,
         picture: user.picture,
       }
     });
@@ -42,6 +46,10 @@ exports.updateProfile = async (req, res) => {
     if (mobile) user.mobile = mobile;
     if (address) user.address = address;
     if (country) user.country = country;
+    if (vllage) user.vllage = vllage;
+    if (distic) user.distic = distic;
+    if (state) user.state = state;
+    if (pincode) user.pincode = pincode;
 
     // Save the updated user
     await user.save();
