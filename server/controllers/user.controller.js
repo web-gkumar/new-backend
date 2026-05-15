@@ -1,62 +1,41 @@
 const User = require("../models/user");
 
+
+/* Get Profile */
 exports.getProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user.userId);
-
-    if (!user)
-      return res.status(404).json({ message: "User not found" });
-
-    res.json({ success: true,
-      user: {
-        userId: user._id,
-        name: user.name,
-        email: user.email,
-        mobile: user.mobile,
-        address: user.address,
-        country: user.country,
-        village: user.village,
-        distic: user.distic,
-        state: user.state,
-        pincode: user.pincode,
-        picture: user.picture,
-      }
-    });
+    const user = await User.findById(req.user.userId).select("-password -resetPasswordToken -resetPasswordExpires -__v");
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found"});
+    }
+    return res.status(200).json({success:true, user});
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Profile fetch failed" });
+    return res.status(500).json({success: false, message: "Profile fetch failed" });
   }
 };
 
 
-
-
-
-
-// Update user profile
+/* Update Profile */
 exports.updateProfile = async (req, res) => {
   try {
     const userId = req.user.userId;
-    const { name, mobile, address, country, village, distic, state, pincode } = req.body;
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
+    const allowedFields = ["name", "mobile", "address", "country", "village", "district", "state", "pincode", "picture"];
+    const updateData = {};
+    allowedFields.forEach(field => {
+      if (req.body[field] !== undefined) { updateData[field] = req.body[field];}
+    });
+
+    const updatedUser = await User.findByIdAndUpdate(userId, { $set: updateData}, { new: true, runValidators: true} ).select("-password -resetPasswordToken -resetPasswordExpires -__v");
+    if (!updatedUser) {
+      return res.status(404).json({ success: false, message: "User not found"});
     }
-    if (name) user.name = name;
-    if (mobile) user.mobile = mobile;
-    if (address) user.address = address;
-    if (country) user.country = country;
-    if (village) user.village = village;
-    if (distic) user.distic = distic;
-    if (state) user.state = state;
-    if (pincode) user.pincode = pincode;
-
-    // Save the updated user
-    await user.save();
-
-    res.json({ success: true, message: "Profile updated successfully", user: { user } });
+    return res.status(200).json({ success: true, message: "Profile updated successfully", user: updatedUser });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Profile update failed" });
+    return res.status(500).json({ success: false, message: "Profile update failed"});
   }
+
+
+
+
+
 };
