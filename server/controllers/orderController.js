@@ -37,7 +37,8 @@ exports.updateOrder = async (req, res) => {
 exports.deleteOrder = async (req, res) => {
   try {
     await Order.findByIdAndDelete(req.params.id);
-    return res.json({ success: true, message: "Order deleted"});
+    const orders = await Order.find().sort({ createdAt: -1 });
+    return res.json({success: true, message: "Order deleted", data: orders});
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });
   }
