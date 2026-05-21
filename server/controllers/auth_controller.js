@@ -34,21 +34,33 @@ exports.register = async (req, res) => {
 
 // ================= LOGIN =================
 exports.login = async (req, res) => {
-  try {
-    const { mobile, password } = req.body;
-    if (!mobile || !password) {return res.status(400).json({success: false, message: "Mobile and password required"});}
+  try { const { mobile, password } = req.body;
+    if (!mobile || !password) {
+      return res.status(400).json({success: false, message: "Mobile and password required" });
+    }
+
     const user = await User.findOne({ mobile });
-    if (!user) {return res.status(404).json({success: false, message: "User not found",});}
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found", });
+    }
+
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {return res.status(400).json({success: false, message: "Invalid password",});}
+    if (!isMatch) {
+      return res.status(400).json({ success: false, message: "Invalid password",});
+    }
+
     const token = jwt.sign(
-      {userId: user._id, mobile: user.mobile,},
-      process.env.JWT_SECRET,{expiresIn: "5d",}
+      {userId: user._id, mobile: user.mobile},
+      process.env.JWT_SECRET, { expiresIn: "5d",}
     );
-    return res.status(200).json({success: true, message: "Login successful", token, user,});
+
+    const userObj = user.toObject();
+    delete userObj.password;
+    return res.status(200).json({success: true, message: "Login successful", token, user: userObj,});
   } catch (err) {
     return res.status(500).json({success: false, message: err.message,});
   }
+
 };
 
 
